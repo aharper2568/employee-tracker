@@ -1,5 +1,9 @@
 const inquirer = require('inquirer');
 const {
+  getAllDepartments,
+  selectDepartmentByName,
+  deleteDepartmentFromPrompt,
+  deleteDepartmentById,
   getDepartments,
   getRoles,
   getEmployees,
@@ -23,6 +27,7 @@ const mainMenu = () => { //acts as prompt and init function
         'Add a role',
         'Add an employee',
         'Update an employee role',
+        'Delete department by ID',
         'Exit',
       ],
     },
@@ -120,7 +125,14 @@ const mainMenu = () => { //acts as prompt and init function
       .then (({employeeId, newRoleId}) => updateEmployeeRole(employeeId,newRoleId))
       .then (() => console.log(`Updated employee role`))
       .then (() => mainMenu());
-    } else if (action === 'Exit') {
+    } else if (action === 'Delete department by ID') {
+      getAllDepartments()
+    .then(selectDepartmentByName)
+    .then(deleteDepartmentFromPrompt)
+    .then(getAllDepartments)
+    .then(() => mainMenu());
+    } 
+    else if (action === 'Exit') {
       console.log('Exiting application...');
       process.exit(); // process.exit allows user to exit without using control + c
     }
