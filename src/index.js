@@ -130,7 +130,8 @@ const mainMenu = () => { //acts as prompt and init function
     .then(selectDepartmentByName)
     .then(deleteDepartmentFromPrompt)
     .then(getAllDepartments)
-    .then(() => mainMenu());
+    .then(() => mainMenu())
+    .catch(error => console.log('ensure all employees are moved from department, exiting process'));
     } 
     else if (action === 'Exit') {
       console.log('Exiting application...');
