@@ -1,5 +1,8 @@
 const { Pool } = require('pg');
 
+const { createPromptModule } = require("inquirer");
+const prompt = createPromptModule();
+
 const pool = new Pool({
   user: 'postgres',
   password: '',
@@ -60,10 +63,33 @@ const updateEmployeeRole = (employee_id, role_id) => {
 };
 
 const deleteDepartmentById = (id) => {
-  return pool.query('DELETE FROM department WHERE id = $1', [id])
+
+  return pool.query(`DELETE FROM department WHERE id = $1`, [id]);
 };
 
+const getAllDepartments = () => {
+  return pool.query("SELECT id AS value, name FROM department");
+};
+
+
+const deleteDepartmentFromPrompt = (answers) => {
+  return deleteDepartmentById(answers.departmentId);
+};
+
+const selectDepartmentByName = (result) => {
+  const question = {
+    type: "rawlist",
+    name: "departmentId",
+    choices: result.rows,
+    message: "What department would you like to remove? WARNING, ALL EMPLOYEES MUST BE REMOVED FROM DEPARTMENT",
+  };
+
+  return prompt(question);
+};
 module.exports = {
+  getAllDepartments,
+  selectDepartmentByName,
+  deleteDepartmentFromPrompt,
   deleteDepartmentById,
   getDepartments,
   getRoles,
@@ -73,3 +99,4 @@ module.exports = {
   addEmployee,
   updateEmployeeRole,
 };
+
