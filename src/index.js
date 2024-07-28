@@ -7,9 +7,9 @@ const {
   addRole,
   addEmployee,
   updateEmployeeRole,
-} = require('./queries')
+} = require('./queries') //functions to call for prompt answers
 
-const mainMenu = () => {
+const mainMenu = () => { //acts as prompt and init function
   inquirer.prompt([
     {
       type: 'list',
@@ -29,13 +29,13 @@ const mainMenu = () => {
   ])
   .then(({action}) => {
     if (action === 'View all departments') {
-      getDepartments()
-      .then(departments => console.table(departments))
-      .then(() => mainMenu());
+      getDepartments() //fetch department table
+      .then(departments => console.table(departments)) // display department table
+      .then(() => mainMenu()); // return to choices
     } else if (action === 'View all roles') {
-      getRoles()
-        .then(roles => console.table(roles))
-        .then(() => mainMenu());
+      getRoles() //fetch roles table
+        .then(roles => console.table(roles)) // display roles deable
+        .then(() => mainMenu()); 
     } else if (action === 'View all employees') {
       getEmployees()
       .then(employees => console.table(employees))
@@ -49,8 +49,8 @@ const mainMenu = () => {
         },
       ])
       .then(({departmentName}) => {
-        return addDepartment(departmentName)
-          .then(() => console.log(`Added Department: ${departmentName}`));
+        return addDepartment(departmentName) //gives departmentName to next promise chain
+          .then(() => console.log(`Added Department: ${departmentName}`)); // confirming successful 
       })
       .then(() => mainMenu());
     } else if (action === 'Add a role') {
@@ -122,10 +122,10 @@ const mainMenu = () => {
       .then (() => mainMenu());
     } else if (action === 'Exit') {
       console.log('Exiting application...');
-      process.exit();
+      process.exit(); // process.exit allows user to exit without using control + c
     }
   })
 };
-
+// init
 mainMenu();
 
