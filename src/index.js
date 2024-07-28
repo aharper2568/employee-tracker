@@ -48,8 +48,10 @@ const mainMenu = () => {
           message:'Enter the name of the department:',
         },
       ])
-      .then(({departmentName}) => addDepartment(departmentName))
-      .then(() => console.log(`Added Department: ${departmentName}`))
+      .then(({departmentName}) => {
+        return addDepartment(departmentName)
+          .then(() => console.log(`Added Department: ${departmentName}`));
+      })
       .then(() => mainMenu());
     } else if (action === 'Add a role') {
       inquirer.prompt([
@@ -69,9 +71,11 @@ const mainMenu = () => {
           message:'Enter the department ID of the role',
         },
       ])
-      .then (({roleTitle, roleSalary, roleDepartmentId}) => addRole(roleTitle,roleSalary,roleDepartmentId))
-      .then(() => console.log(`added role: ${roleTitle}`))
-    .then(() => mainMenu())
+      .then(({roleTitle, roleSalary, roleDepartmentId}) => {
+        return addRole(roleTitle, roleSalary, roleDepartmentId)
+          .then(() => console.log(`added role: ${roleTitle}`));
+      })
+      .then(() => mainMenu());
     } else if (action === 'Add an employee') {
       inquirer.prompt([
         {
@@ -95,9 +99,11 @@ const mainMenu = () => {
           messge:'enter manager id(skip if no manager)',
         },
       ])
-      .then(({firstName, lastName, roleId, managerId}) => addEmployee(firstName,lastName,roleId,managerId))
-      .then (()=>console.log(`added employee ${firstName} ${lastName}`))
-      .then (() => mainMenu());
+      .then(({firstName, lastName, roleId, managerId}) => {
+        return addEmployee(firstName, lastName, roleId, managerId)
+          .then(() => console.log(`added employee ${firstName} ${lastName}`));
+      })
+      .then(() => mainMenu());
     } else if (action === 'Update an employee role') {
       inquirer.prompt([
         {
