@@ -59,7 +59,12 @@ const updateEmployeeRole = (employee_id, role_id) => {
     .catch(err => console.error(err));
 };
 
+const deleteDepartmentById = (id) => {
+  return pool.query('DELETE FROM department WHERE id = $1', [id])
+};
+
 module.exports = {
+  deleteDepartmentById,
   getDepartments,
   getRoles,
   getEmployees,
