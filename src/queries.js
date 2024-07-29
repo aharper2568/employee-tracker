@@ -1,20 +1,20 @@
 const { Pool } = require('pg');
 
 const { createPromptModule } = require("inquirer");
-const prompt = createPromptModule();
+const prompt = createPromptModule(); // housekeeping for deleteDepartment functions
 
 const pool = new Pool({
   user: 'postgres',
   password: '',
   database: 'department_db',
 });
-
+// get all departments from db
 const getDepartments = () => {
   return pool.query('SELECT * FROM department')
-    .then(result => result.rows)
-    .catch(err => console.error(err));
+    .then(result => result.rows) // return rows from query
+    .catch(err => console.error(err)); // log error
 };
-
+// get all roles from db
 const getRoles = () => {
   return pool.query(`
     SELECT role.*, department.name AS department_name 
@@ -24,7 +24,7 @@ const getRoles = () => {
     .then(result => result.rows)
     .catch(err => console.error(err));
 };
-
+// get all employees from db
 const getEmployees = () => {
   return pool.query(`
     SELECT employee.*, role.title, role.salary, department.name AS department_name,
@@ -40,7 +40,7 @@ const getEmployees = () => {
 
 const addDepartment = (name) => {
   return pool.query('INSERT INTO department (name) VALUES ($1) RETURNING *', [name])
-    .then(result => result.rows[0])
+    .then(result => result.rows[0]) // return first row from query result
     .catch(err => console.error(err));
 };
 
@@ -61,19 +61,19 @@ const updateEmployeeRole = (employee_id, role_id) => {
     .then(result => result.rows[0])
     .catch(err => console.error(err));
 };
-
+// delete department based on given ID
 const deleteDepartmentById = (id) => {
 
   return pool.query(`DELETE FROM department WHERE id = $1`, [id]);
 };
-
+// getall departments Ids and rename to Value, names
 const getAllDepartments = () => {
   return pool.query("SELECT id AS value, name FROM department");
 };
 
 
 const deleteDepartmentFromPrompt = (answers) => {
-  return deleteDepartmentById(answers.departmentId);
+  return deleteDepartmentById(answers.departmentId); // delete department based on answer from prompt, name correlated to ID value
 };
 
 const selectDepartmentByName = (result) => {
@@ -84,7 +84,7 @@ const selectDepartmentByName = (result) => {
     message: "What department would you like to remove? WARNING, ALL EMPLOYEES MUST BE REMOVED FROM DEPARTMENT",
   };
 
-  return prompt(question);
+  return prompt(question); //prompt user to select department
 };
 module.exports = {
   getAllDepartments,
