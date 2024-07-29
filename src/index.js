@@ -101,7 +101,7 @@ const mainMenu = () => { //acts as prompt and init function
         {
           type:'input',
           name:'managerId',
-          messge:'enter manager id(skip if no manager)',
+          message:'enter manager id',
         },
       ])
       .then(({firstName, lastName, roleId, managerId}) => {
